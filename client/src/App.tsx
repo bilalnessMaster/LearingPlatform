@@ -47,7 +47,15 @@ function App() {
         />
       }
     />
-    
+    <Route
+      path="/instructor/edit-course/:id"
+      element={
+        <RouteGuard
+          element={<AddNewCoursePage />}
+       
+        />
+      }
+    />
     <Route
       path="/"
       element={

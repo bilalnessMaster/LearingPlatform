@@ -4,6 +4,7 @@ import cors from 'cors'
 import {db} from './lib/database/db.js'
 import authRoutes from './routes/auth.route.js'
 import MediaRoutes from './routes/media.route.js'
+import CourseRoutes from './routes/course.route.js'
 dotenv.config();
 const app = express()
 const port = process.env.PORT || 5000;
@@ -20,8 +21,7 @@ app.use(cors({
 
 app.use("/auth" , authRoutes)
 app.use("/media" , MediaRoutes)
-
-
+app.use('/courses', CourseRoutes)
 
 
 

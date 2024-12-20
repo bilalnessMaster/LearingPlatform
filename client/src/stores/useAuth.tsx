@@ -5,9 +5,9 @@ export interface Authform {
   IsLoading : boolean,
     user : {
       userId  : string ,
-       username  : string , 
+      username  : string , 
       email : string , 
-       role  : string , 
+      role  : string , 
       authenticate : boolean
     } | null ,
     SignUpformData: {
@@ -93,7 +93,7 @@ export const useAuthData   = create<Authform>((set , get)=> ({
       
       
     } catch (error ) {
-      console.log("while check auth in frontend "+JSON.stringify(error?.response?.data));
+      console.log("while check auth in frontend "+error);
       if(!error?.response?.data?.success){
         set({user : null , IsLoading : false})  
       }

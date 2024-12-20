@@ -58,7 +58,7 @@ const InstructorDashboardPage= () => {
             <Tabs value={active} onValueChange={setActive}>
                   {
                     menuItems.map(item =>(
-                      <TabsContent value={item.value}>
+                      <TabsContent key={item.label} value={item.value}>
                             {item.Component }
                       </TabsContent>
                     ))
