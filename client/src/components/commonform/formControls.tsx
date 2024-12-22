@@ -24,7 +24,8 @@ const FormControls = ({ formControls = [], formData, setFormData }:{
   function renderComponentByType(getControlItem: FormControl) {
     let element = null;
     const currentControlItemValue = formData[getControlItem.name] || "";
-
+ 
+    
     
     
     switch (getControlItem.componentType) {

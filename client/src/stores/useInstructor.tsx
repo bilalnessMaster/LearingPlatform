@@ -7,7 +7,7 @@ declare interface useInstructorType {
     title: string;
     category: string;
     level: string;
-    primaryLanguage: string;
+    language: string;
     subtitle: string;
     description: string;
     pricing: number;
@@ -38,17 +38,17 @@ declare interface useInstructorType {
   mediaUploadPercentage: number;
   mediaUploadProgress: boolean;
   CourseformData: {
-    title: string;
-    category: string;
-    level: string;
-    primaryLanguage: string;
-    subtitle: string;
-    description: string;
-    pricing: number;
-    objectives: string;
-    welcomeMessage: string;
-    image: string;
-    public_id: string;
+    title?: string;
+    category?: string;
+    level?: string;
+    language?: string;
+    subtitle?: string;
+    description?: string;
+    pricing?: number;
+    objectives?: string;
+    welcomeMessage?: string;
+    image?: string;
+    public_id?: string;
   };
   courseCurriculumInitialFormData: {
     title: string;
@@ -71,7 +71,12 @@ declare interface useInstructorType {
     userId: string | undefined,
     username: string | undefined
   ) => void;
-  FetchCourseList : () => void
+  FetchCourseList : () => void;
+  updateCourseDetails : (id : string ,  userId: string | undefined,
+    username: string | undefined ) => void;
+  FetchCourseDetails : (id : string  ) => void;
+  resetforms : ( ) => void;
+  MediaBulkUpload :(e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const useInstructor = create<useInstructorType>((set, get) => ({
@@ -82,7 +87,7 @@ export const useInstructor = create<useInstructorType>((set, get) => ({
     title: "",
     category: "",
     level: "",
-    primaryLanguage: "",
+    language: "",
     subtitle: "",
     description: "",
     pricing: 0,
@@ -244,7 +249,7 @@ export const useInstructor = create<useInstructorType>((set, get) => ({
   uploadNewCourse: async (userId, username) => {
     try {
       const { courseCurriculumInitialFormData, CourseformData } = get();
-      console.log("entre");
+  
 
       let finalCourseForm = {
         instructorId: userId,
@@ -271,7 +276,7 @@ export const useInstructor = create<useInstructorType>((set, get) => ({
             title: "",
             category: "",
             level: "",
-            primaryLanguage: "",
+            language: "",
             subtitle: "",
             description: "",
             pricing: 0,
@@ -294,18 +299,126 @@ export const useInstructor = create<useInstructorType>((set, get) => ({
       console.log(error);
     }
   },
-  FetchCourseDetails: async () => {
+  FetchCourseDetails: async (id) => {
     try {
-      const { data } = await axios.get(`courses/course-details/:id${id}`);
+      const {CourseformData} =get()
+      const { data } = await axios.get(`courses/course-details/${id}`);
+      if(data?.success){
+        const setCourseData = Object.keys(CourseformData).reduce((prev: typeof CourseformData , key) =>{
+            prev[key] = data?.data[key] || CourseformData[key]
+         
+            
+            return prev
+        },{})
+        set({CourseformData : setCourseData ,courseCurriculumInitialFormData: data?.data.curriculum })
+        
+      }
+      
     } catch (error) {
       console.log(error);
     }
   },
-  updateCourseDetails: async () => {
+  updateCourseDetails: async (id , userId, username) => {
     try {
-      const { data } = await axios.put(`courses/update/${id}`);
+      const { courseCurriculumInitialFormData, CourseformData } = get();
+  
+
+      let finalCourseForm = {
+        instructorId: userId,
+        instructorName: username,
+        date: new Date(),
+        ...CourseformData,
+        curriculum: courseCurriculumInitialFormData,
+        isPublised: true,
+      };
+      const { data } = await axios.put(`courses/update/${id}` ,finalCourseForm);
+      console.log(data);
+      
     } catch (error) {
       console.log(error);
     }
   },
+  resetforms  : () => {
+    set({
+      CourseformData : {
+        title: "",
+        category: "",
+        level: "",
+        language: "",
+        subtitle: "",
+        description: "",
+        pricing: 0,
+        objectives: "",
+        welcomeMessage: "",
+        image: "",
+        public_id: "",
+      } ,
+      courseCurriculumInitialFormData :[
+        {
+          title: "",
+          videoUrl: "",
+          freePreview: false,
+          public_id: "",
+        },
+      ],
+    })
+  },
+  MediaBulkUpload : async (e) => { 
+    try {
+      const {courseCurriculumInitialFormData} = get()
+      const seletecdFiles: File[] | null = Array.from(e.target.files)
+      const checkEmpty = (arr : any) => { 
+        try {
+          return arr.every((item: any )=> { 
+            return Object.entries(item).every(([key , value] )=> {
+            if( typeof value  === 'boolean'){
+              return true
+            }else{
+              return value === ''
+            }
+            })
+          })
+        } catch (error) {
+          console.log(error);
+          
+        }
+      }
+      const bulkForm = new FormData();
+      seletecdFiles.forEach((element : File) => bulkForm.append('files' , element));
+      set({mediaUploadProgress: true})
+      const {data} = await axios.post('media/bulk-upload' , bulkForm ,{
+        onUploadProgress: (ProgressEvent) => {
+          const total: number | undefined = ProgressEvent.total;
+          const percentCompleted = Math.round(
+            (ProgressEvent.loaded * 100) / total
+          );
+          set({
+            mediaUploadPercentage: percentCompleted,
+          });
+        },
+      })
+      if(data?.success){
+      let copycourseCurriculumInitialFormData = checkEmpty(courseCurriculumInitialFormData) ? [] : [...courseCurriculumInitialFormData] 
+      copycourseCurriculumInitialFormData =[
+        ...copycourseCurriculumInitialFormData
+        , ...data.data.map((item : any , index : number)=>(
+          {
+            title: `lecture ${copycourseCurriculumInitialFormData.length + index+1}`,
+            videoUrl: item.secure_url,
+            freePreview: false,
+            public_id: item.public_id,
+          }
+        ))
+      ]
+      set({
+        courseCurriculumInitialFormData: copycourseCurriculumInitialFormData
+      })
+        
+      }
+      set({ mediaUploadProgress: false });
+    } catch (error) {
+      console.log(error);
+      
+    }
+  } 
 }));

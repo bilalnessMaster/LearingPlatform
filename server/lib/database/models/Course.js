@@ -20,7 +20,8 @@ const CourseSchema = new Schema({
     image : String, 
     welcomeMessage : String ,
     pricing : Number,
-    Objectives : String, 
+    objectives : String, 
+    public_id: String ,
     students : [
         {
             studentId : String, 

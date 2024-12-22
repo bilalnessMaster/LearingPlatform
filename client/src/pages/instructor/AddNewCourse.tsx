@@ -7,19 +7,29 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuthData } from "@/stores/useAuth";
 import { useInstructor } from "@/stores/useInstructor";
 import { TabsContent } from "@radix-ui/react-tabs";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 
 const AddNewCoursePage = () => {
-  const { CourseformData, uploadNewCourse , courseCurriculumInitialFormData } = useInstructor();
+  const { CourseformData,updateCourseDetails, FetchCourseDetails ,uploadNewCourse , courseCurriculumInitialFormData } = useInstructor();
   const {user} = useAuthData()
+  const {id} = useParams()
   const isEmpty = (value: any) :boolean => {
     if (Array.isArray(value)) {
       return value.length === 0;
     }
     return value === "" || value === null || value === undefined;
   };
+  useEffect(()=>{
+    if(id){
+      FetchCourseDetails(id)
+    }
+  },[id,FetchCourseDetails ])
   const validateFormData = () => {
     for (const key of Object.keys(CourseformData) as (keyof typeof CourseformData)[]) {
+        
+      
         if (isEmpty(CourseformData[key])) {
             return false;
         }
@@ -43,8 +53,13 @@ const AddNewCoursePage = () => {
     return hasFreePreview;
   };
   const handleSubmit = async () =>{ 
-    uploadNewCourse( user?.userId , user?.username)
+    if(id) {
+      updateCourseDetails(id , user?.userId , user?.username )
+    }else{
+      uploadNewCourse( user?.userId , user?.username)
+    }
   }
+  
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-3">

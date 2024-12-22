@@ -7,6 +7,9 @@ import { useInstructor } from "@/stores/useInstructor"
 
 const CourseLandingPage = () => {
 const {setCourseForm , CourseformData} = useInstructor()
+
+console.log(CourseformData);
+
   return (
     <Card>
       <CardHeader>

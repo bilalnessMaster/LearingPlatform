@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const IntructorCourses = () => {
-  const {FetchCourseList ,CoursesList} = useInstructor()
+  const {FetchCourseList ,CoursesList , resetforms} = useInstructor()
   const Navigate= useNavigate()
   useEffect(()=>{
     FetchCourseList()
@@ -24,7 +24,10 @@ const IntructorCourses = () => {
     <Card>
       <CardHeader className="flex justify-between  flex-row items-center">
         <CardTitle>All Courses</CardTitle>
-        <Button onClick={()=>Navigate('/instructor/create-new-course')} className="p-6">Create New course</Button>
+        <Button onClick={()=>{
+          Navigate('/instructor/create-new-course') ; 
+          resetforms()
+        }} className="p-6">Create New course</Button>
       </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -42,8 +45,8 @@ const IntructorCourses = () => {
                   {
                     CoursesList.map((course) =>(
 
-                     <TableRow>
-                     <TableCell className="font-medium">{course?.title}</TableCell>
+                     <TableRow key={course.title}>
+                     <TableCell className="font-medium truncate ... ">{course?.title}</TableCell>
                      <TableCell>{course?.students.length}</TableCell>
                      <TableCell>{course?.pricing *course?.students.length}</TableCell>
                      <TableCell className="text-right">

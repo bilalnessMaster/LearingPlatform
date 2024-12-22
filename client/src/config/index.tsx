@@ -103,7 +103,7 @@ export const languageOptions:optionsType[] = [
       options: courseLevelOptions,
     },
     {
-      name: "primaryLanguage",
+      name: "language",
       label: "Primary Language",
       componentType: "select",
       type: "text",

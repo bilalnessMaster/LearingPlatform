@@ -16,6 +16,17 @@ router.post('/upload',upload.single('file') , async (req , res )=>{
         res.status(500).json({success : false, message : "error  upload"})
     }
 } )
+router.post('/bulk-upload', upload.array('files', 10) , async (req,res) => { 
+    try {
+        const PromiseFiles = req.files.map(file => uploadMediaToCloudinary(file.path));
+        const results = await Promise.all(PromiseFiles)
+        res.status(200).json({message : "upload successfully" , success : true , data : results})
+    } catch (error) {
+        console.log(" while bulk uploading" ,error);
+        
+        res.status(500).json({success : false, message : "error in bulk upload"})
+    }
+} )
 router.delete('/delete/:id', async (req , res )=>{
     try {
         const {id} = req.params
