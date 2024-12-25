@@ -18,6 +18,7 @@ const Curriculum = () => {
     setFormCurriculumTitle,
     handleSwitchChange,
     replaceFile,
+    DeleteFile,
     courseCurriculumInitialFormData,
     handleFileChange,
     MediaBulkUpload,
@@ -38,7 +39,6 @@ const Curriculum = () => {
   const handleMediaChange = () => { 
     bulkUplaodRef?.current?.click()
   }
-  
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between ">
@@ -125,7 +125,7 @@ const Curriculum = () => {
                       </Button>
                       <Button
                         onClick={() =>
-                          replaceFile(
+                          DeleteFile(
                             index,
                             courseCurriculumInitialFormData[index]?.public_id
                           )

@@ -67,6 +67,7 @@ declare interface useInstructorType {
   setMediaProgress: (value: boolean) => void;
   handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   replaceFile: (index: number, public_id: string) => void;
+  DeleteFile: (index: number, public_id: string) => void;
   uploadNewCourse: (
     userId: string | undefined,
     username: string | undefined
@@ -246,6 +247,25 @@ export const useInstructor = create<useInstructorType>((set, get) => ({
       console.log(error);
     }
   },
+  DeleteFile :  async (index, pulbic_id) => {
+    try {
+      const { courseCurriculumInitialFormData } = get();
+      const { data } = await axios.delete(`/media/delete/${pulbic_id}`);
+      if (data.success) {
+        let cpycourseCurriculumInitialFormData = [
+          ...courseCurriculumInitialFormData,
+        ];
+        cpycourseCurriculumInitialFormData = cpycourseCurriculumInitialFormData.filter((_ , inex)=> inex !== index)
+        console.log(cpycourseCurriculumInitialFormData);
+        
+        set({
+          courseCurriculumInitialFormData: cpycourseCurriculumInitialFormData,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
   uploadNewCourse: async (userId, username) => {
     try {
       const { courseCurriculumInitialFormData, CourseformData } = get();
@@ -331,7 +351,11 @@ export const useInstructor = create<useInstructorType>((set, get) => ({
         curriculum: courseCurriculumInitialFormData,
         isPublised: true,
       };
+      
+      
+      
       const { data } = await axios.put(`courses/update/${id}` ,finalCourseForm);
+      
       console.log(data);
       
     } catch (error) {
