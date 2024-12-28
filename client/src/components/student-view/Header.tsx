@@ -1,10 +1,11 @@
 import { GraduationCap, TvMinimalPlay } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 import { useAuthData } from "@/stores/useAuth"
 
 
 const Header = () => {
+    const navigate = useNavigate()
     const {Loggout} = useAuthData()
   return (
     <header className="flex items-center justify-between p-4 border-b relative ">
@@ -15,7 +16,7 @@ const Header = () => {
 
             </Link>
             <div className="flex items-center space-x-1">
-                <Button variant={'ghost'} className=" capitalize">
+                <Button onClick={()=>navigate('/courses')} variant={'ghost'} className=" capitalize">
                     explore course
                 </Button>
 

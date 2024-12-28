@@ -8,7 +8,10 @@ export default {
   theme: {
   	extend: {
 		fontFamily: { 
-			archivo : ["Archivo", "serif"]
+			archivo : ["Archivo", "serif"] , 
+			poppin : ["Poppins", "serif"] , 
+			dm : ["DM Sans", "serif"] , 
+			apple : ['-apple-system', "BlinkMacSystemFont", "sans-serif"] , 
 		},
   		borderRadius: {
   			lg: 'var(--radius)',

@@ -178,5 +178,5 @@ export const languageOptions:optionsType[] = [
   export const filterOptions = {
     category: courseCategories,
     level: courseLevelOptions,
-    primaryLanguage: languageOptions,
+    Language: languageOptions,
   };
