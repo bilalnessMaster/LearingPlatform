@@ -7,6 +7,12 @@ export default {
   ],
   theme: {
   	extend: {
+		container : {
+			center : true , 
+			padding : { 
+				lg: 'p-4'
+			}
+		},
 		fontFamily: { 
 			archivo : ["Archivo", "serif"] , 
 			poppin : ["Poppins", "serif"] , 

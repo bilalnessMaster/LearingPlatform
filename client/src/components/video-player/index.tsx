@@ -6,9 +6,9 @@ import { Button } from '../ui/button'
 import { Pause, Play, RotateCcw, RotateCw, Volume2, VolumeX } from 'lucide-react'
 
 const VideoPlayer = ({
-    width , height  , url
+    width , height  , url , className
 }:{
-    width ?: string , height ?: string , url : string
+    width ?: string , height ?: string , url : string | undefined , className?: string
 }) => {
     const [playing, setPlaying ] = useState(false)
     const [volume , setVolume] = useState(0.5)
@@ -87,9 +87,15 @@ const VideoPlayer = ({
             document.removeEventListener('fullscreenchange' , handleFullScreen)
         }
     },[])
-      
+    useEffect(()=>{
+       if(showControls){
+        setTimeout(()=>{
+            setShowControls(!showControls)
+        },2000)
+       }
+    },[showControls])
   return (
-    <div className={twMerge('relative bg-gray-900 rounded-lg overflow-hidden shadow-2xl transition-all duration-300 ease-in-out', isFullScreen && 'h-screen w-screen')} 
+    <div onMouseEnter={()=>setShowControls(true)} onMouseLeave={()=>setShowControls(false)} className={twMerge('relative bg-gray-900  overflow-hidden shadow-2xl transition-all duration-300 ease-in-out', className , isFullScreen && 'h-screen w-screen')} 
     style={{
         width , 
         height

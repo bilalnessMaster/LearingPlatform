@@ -10,6 +10,7 @@ import StudentViewCommonLayout from "./components/student-view/common-layout";
 import NotFoundPage from "./pages/not-found-page";
 import AddNewCoursePage from "./pages/instructor/AddNewCourse";
 import StudentCoursesPage from "./pages/student/courses";
+import StudentLandingCoursePage from "./pages/student/student-course-details";
 
 function App() {
   const {checkAuth } = useAuthData()
@@ -69,6 +70,7 @@ function App() {
       <Route path="/" element={<StudentHomePage />} />
       <Route path="/home" element={<StudentHomePage />} />
       <Route path="/courses" element={<StudentCoursesPage />} />
+      <Route path="/courses/details/:id" element={<StudentLandingCoursePage />} />
     </Route>
     <Route path="*" element={<NotFoundPage/>} />  
   </Routes>

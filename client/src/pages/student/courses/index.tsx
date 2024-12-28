@@ -18,7 +18,7 @@ import { DropdownMenuRadioItem } from "@radix-ui/react-dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useStudentStore } from "@/stores/useStudentStore";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 type filterType = {
   category?: string[];
   level?: string[];
@@ -35,6 +35,7 @@ const createSearchParamsHelper = (filter: any) => {
   return paramsArray.join("&");
 };
 const StudentCoursesPage = () => {
+  const Navigate = useNavigate()
   const [page, setPage] = useState<number>(1);
   const [sort, setSort] = useState<string>("price-hightolow");
   const [filters, setFilters] = useState<filterType>({});
@@ -166,6 +167,7 @@ const StudentCoursesPage = () => {
             ) : studentCourseList && studentCourseList.length > 0 ? (
               studentCourseList.map((course, index) => (
                 <div
+                onClick={()=>Navigate(`/courses/details/${course._id}`)}
                   key={index}
                   className="flex mt-3 items-start  flex-col md:flex-row md:h-40 w-full  border-b pb-4"
                 >
@@ -210,6 +212,14 @@ const StudentCoursesPage = () => {
           </div>
           {studentCourseList.length > 0 && (
             <div className="flex items-center justify-end gap-1 font-archivo mt-3">
+              <p className="flex gap-2 text-neutral-300">
+                <span>
+                result
+                </span>
+                <span>{
+                  studentCourseList.length
+                }</span>
+              </p>
               <Button
                 variant={"ghost"}
                 disabled={page === 1}

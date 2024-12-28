@@ -66,7 +66,7 @@ export const getCourseDetailsForStudent = async (req ,res) => {
         const course = await Course.findById(id)
 
         if(!course) return  res.status(404).json({message: "no course found" , success: false})
-        res.status(200).json({message: "course found" , success: true , data : course})
+        res.status(200).json({message: "course found" , success: true ,  course})
 
     } catch (error) {
         console.log('error happend while getting all courses for student '+error);

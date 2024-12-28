@@ -8,7 +8,7 @@ const Header = () => {
     const navigate = useNavigate()
     const {Loggout} = useAuthData()
   return (
-    <header className="flex items-center justify-between p-4 border-b relative ">
+    <header className="flex items-center justify-between p-4 border-b relative font-archivo ">
         <div className="flex items-center space-x-4 ">
             <Link to={"/home"} className="flex items-center justify-center gap-2">
                 <GraduationCap className="h-8 w-8 gover:text-black" />
@@ -25,10 +25,10 @@ const Header = () => {
         <div className="flex items-center space-x-4 ">
             <div className="flex gap-4 items-center  ">
                <div className="flex items-center gap-2 cursor-pointer">
+                <TvMinimalPlay  className="text-gray-400 h-5 w-5"/>
                 <span>My Courses</span>
-                <TvMinimalPlay  className="h-8 w-8  "/>
                </div>
-               <Button onClick={Loggout}>log out</Button>
+               <Button onClick={Loggout}>Log out</Button>
             </div>
         </div>
     </header>
