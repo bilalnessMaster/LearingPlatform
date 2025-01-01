@@ -6,6 +6,6 @@ import {
 const router = express.Router();
 
 router.get("/get", getAllCoursesForStudent);
-router.get("/getDetails/:id", getCourseDetailsForStudent);
+router.get("/getDetails/:id/:userId", getCourseDetailsForStudent);
 
 export default router;

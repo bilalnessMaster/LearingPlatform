@@ -7,9 +7,18 @@ const OrderSchema = new Schema({
     userId: String,
     userName: String,
     userEmail: String,
-    orderStatus: String,
-    paymentMethod: String,
-    paymentStatus: String,
+    orderStatus: {
+        type : String , 
+        default  : 'pending'
+    },
+    paymentMethod: {
+        type : String , 
+        default  : 'paypal'
+    },
+    paymentStatus: {
+        type : String , 
+        default  : 'unpaid'
+    },
     orderDate: Date,
     paymentId: String,
     payerId: String,

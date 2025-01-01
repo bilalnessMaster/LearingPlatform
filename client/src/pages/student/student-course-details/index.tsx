@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useStudentStore } from "@/stores/useStudentStore";
 import { Check, ChevronRight, CirclePlay, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
 import { twMerge } from "tailwind-merge";
@@ -10,10 +10,10 @@ import VideoPlayer from "@/components/video-player";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useAuthData } from "@/stores/useAuth";
 declare type freePreviewtype = {
   freePreview?: true;
   public_id?: string;
@@ -23,14 +23,34 @@ declare type freePreviewtype = {
 }[];
 const StudentLandingCoursePage = () => {
   const [show, setShow] = useState(0);
+  const {user} =useAuthData()
   const [open, setOpen] = useState(false);
   const [CoursePreview, setCoursePreview] = useState<freePreviewtype>([]);
   const { id } = useParams();
-  const { course, fetchCourseDetails, loading } = useStudentStore();
-
+  const { course,alreadyPurchased , fetchCourseDetails, loading , handleCreatePayment , approval_url} = useStudentStore();
+  const [payload , setPayload] = useState({})
+  useEffect(()=>{
+    if(user && course){
+      setPayload({
+        userId: user?.userId,
+        userName: user?.username,
+        userEmail: user?.email,
+        orderDate: new Date(),
+        instructorId: course?.instructorId,
+        instructorName:  course?.instructorName,
+        courseImage: course?.image,
+        courseTitle: course?.title,
+        courseId: course?._id,
+        coursePricing: course?.pricing,
+    })
+    }
+  } , [course])
+  
+  
   useEffect(() => {
     if (id) {
-      fetchCourseDetails(id);
+      const userId : string | undefined = user?.userId
+      fetchCourseDetails(id , userId);
     }
   }, [fetchCourseDetails]);
 
@@ -41,10 +61,13 @@ const StudentLandingCoursePage = () => {
     }
   }, [course]);
   if (loading) return <Skeleton />;
-
+  if(approval_url){
+    window.location.href = approval_url
+  }
+  if(alreadyPurchased) return <Navigate to={`/courses-progress/${course._id}`} />
   return (
     <section className=" ">
-      <div className="bg-gray-900 text-white font-archivo">
+      <div className="bg-neutral-900 text-white font-archivo">
         <div className="container ">
           <div className="max-w-6xl h-[400px]  mx-auto px-2 py-3 grid grid-cols-5 gap-4 ">
             <div className="space-y-3 col-span-3  ">
@@ -126,7 +149,9 @@ const StudentLandingCoursePage = () => {
                     ${course?.pricing}
                   </span>
                 </p>
-                <Button className="rounded-none w-full">Add to cart</Button>
+                <Button className="rounded-none w-full py-2" onClick={()=>{
+                  handleCreatePayment(payload)
+                }}>buy now using paypal</Button>
               </div>
             </div>
           </div>

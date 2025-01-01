@@ -46,7 +46,7 @@ const IntructorCourses = () => {
                     CoursesList.map((course) =>(
 
                      <TableRow key={course.title}>
-                     <TableCell className="font-medium truncate ... ">{course?.title}</TableCell>
+                     <TableCell className="font-medium  truncate w-20  ">{course?.title}</TableCell>
                      <TableCell>{course?.students.length}</TableCell>
                      <TableCell>{course?.pricing *course?.students.length}</TableCell>
                      <TableCell className="text-right">

@@ -1,4 +1,5 @@
 import Course from "../lib/database/models/Course.js"
+import StudentCourse from "../lib/database/models/StudentCourses.js"
 
 
 
@@ -45,12 +46,13 @@ export const GetAllCourse = async (req ,res) => {
 }
 export const GetCourseById = async (req ,res) => {
     try {
-        const {id} = req.params
+        const {id } = req.params
         const course = await Course.findById(id)
         if(!course)res.status(404).json({
             success : false,
             message : "course not found"
         })
+        
         res.status(200).json({
             success : true,
             message : "course found",

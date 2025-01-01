@@ -1,5 +1,5 @@
 import { GraduationCap, TvMinimalPlay } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 import { useAuthData } from "@/stores/useAuth"
 
@@ -24,7 +24,7 @@ const Header = () => {
         </div>
         <div className="flex items-center space-x-4 ">
             <div className="flex gap-4 items-center  ">
-               <div className="flex items-center gap-2 cursor-pointer">
+               <div onClick={()=>navigate('/student-courses')} className="flex items-center gap-2 cursor-pointer">
                 <TvMinimalPlay  className="text-gray-400 h-5 w-5"/>
                 <span>My Courses</span>
                </div>

@@ -17,7 +17,7 @@ const StudentCourseSchema = new Schema({
       
     },
   ],
-});
+},{timestamps : true});
 
 const StudentCourse = mongoose.model('studentCourse', StudentCourseSchema)
 export default StudentCourse;

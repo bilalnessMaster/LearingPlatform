@@ -86,6 +86,7 @@ export const useAuthData   = create<Authform>((set , get)=> ({
       const {data} = await axios.get('auth/check-auth')
       if(data.success) { 
         
+        
         set({user : { ...data.data.user , authenticate : true} , IsLoading : false})  
       }else{
         set({user : null})  

@@ -11,6 +11,9 @@ import NotFoundPage from "./pages/not-found-page";
 import AddNewCoursePage from "./pages/instructor/AddNewCourse";
 import StudentCoursesPage from "./pages/student/courses";
 import StudentLandingCoursePage from "./pages/student/student-course-details";
+import SuccessPage from "./pages/sucessPage";
+import StudentCoursesPages from "./pages/student-courses";
+import CourseProgressPage from "./pages/course-progress";
 
 function App() {
   const {checkAuth } = useAuthData()
@@ -71,6 +74,9 @@ function App() {
       <Route path="/home" element={<StudentHomePage />} />
       <Route path="/courses" element={<StudentCoursesPage />} />
       <Route path="/courses/details/:id" element={<StudentLandingCoursePage />} />
+      <Route path="/courses-progress/:id" element={<CourseProgressPage />} />
+      <Route path="/student-courses" element={<StudentCoursesPages />} />
+      <Route path="/success-payment" element={<SuccessPage />} />
     </Route>
     <Route path="*" element={<NotFoundPage/>} />  
   </Routes>
