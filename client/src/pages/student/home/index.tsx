@@ -7,8 +7,15 @@ import { useNavigate } from 'react-router-dom'
 
 
 const StudentHomePage = () => {
-  
+  const  navigate = useNavigate()
   const {fetchStudentCoures , studentCourseList} = useStudentStore()
+  const handeCategory = (label : string ) => { 
+      let filters = { 
+        category : [ label]
+      }
+      sessionStorage.setItem('filters' , JSON.stringify(filters))
+      navigate('/courses')
+  }
   useEffect(()=>{ 
     fetchStudentCoures()
   },[])
@@ -32,7 +39,7 @@ const StudentHomePage = () => {
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2'>
           {
             courseCategories.map(({id , label})=>(
-              <Button className='' variant={'outline'} key={id}>
+              <Button onClick={()=>handeCategory(id)} className='' variant={'outline'} key={id}>
                 {label}
               </Button>
             ))
@@ -44,7 +51,7 @@ const StudentHomePage = () => {
           <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                 {
                   studentCourseList && studentCourseList.length > 0 ? studentCourseList.map((course ,index)=>(
-                      <div key={index} className='border rounded-lg'>
+                      <div onClick={()=>navigate(`/courses/details/${course._id}`)} key={index} className='border rounded-lg'>
                           <img src={course?.image} alt={course.title} className='w-full h-55 rounded-t-lg object-cover'/>
                           <div className='p-2'>
                             <h3 className='font-archivo font-bold  '>

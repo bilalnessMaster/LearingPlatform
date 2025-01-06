@@ -8,6 +8,7 @@ import CourseRoutes from './routes/course.route.js'
 import CourseStudentRoutes from './routes/studentCourse.route.js'
 import OrderRoutes from './routes/order.route.js'
 import boughtCoursesRoutes from './routes/eachcouresforstudent.routes.js'
+import ProgressRoutes from './routes/progress.route.js'
 dotenv.config();
 const app = express()
 const port = process.env.PORT || 5000;
@@ -28,6 +29,8 @@ app.use('/courses', CourseRoutes)
 app.use('/student/course', CourseStudentRoutes)
 app.use('/order', OrderRoutes)
 app.use('/boughtCourses', boughtCoursesRoutes)
+app.use('/boughtCourses', boughtCoursesRoutes)
+app.use('/progressCourse', ProgressRoutes)
 
 
 

@@ -23,11 +23,12 @@ declare type freePreviewtype = {
 }[];
 const StudentLandingCoursePage = () => {
   const [show, setShow] = useState(0);
+ 
   const {user} =useAuthData()
   const [open, setOpen] = useState(false);
   const [CoursePreview, setCoursePreview] = useState<freePreviewtype>([]);
   const { id } = useParams();
-  const { course,alreadyPurchased , fetchCourseDetails, loading , handleCreatePayment , approval_url} = useStudentStore();
+  const { course,purchased , fetchCourseDetails, loading , handleCreatePayment , approval_url} = useStudentStore();
   const [payload , setPayload] = useState({})
   useEffect(()=>{
     if(user && course){
@@ -60,14 +61,16 @@ const StudentLandingCoursePage = () => {
       setCoursePreview(courses);
     }
   }, [course]);
+ 
   if (loading) return <Skeleton />;
   if(approval_url){
     window.location.href = approval_url
   }
-  if(alreadyPurchased) return <Navigate to={`/courses-progress/${course._id}`} />
+  if(purchased) return <Navigate to={`/courses-progress/${course._id}`} />
+  
   return (
     <section className=" ">
-      <div className="bg-neutral-900 text-white font-archivo">
+      <div className="bg-neutral-900 text-white font-archivo ">
         <div className="container ">
           <div className="max-w-6xl h-[400px]  mx-auto px-2 py-3 grid grid-cols-5 gap-4 ">
             <div className="space-y-3 col-span-3  ">
@@ -139,6 +142,7 @@ const StudentLandingCoursePage = () => {
                     url={CoursePreview[0]?.videoUrl}
                     width="100%"
                     height="200px"
+                 
                   />
                 </div>
                 <div className="p-2 text-black font-serif">

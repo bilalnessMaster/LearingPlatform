@@ -14,10 +14,10 @@ export const getStudentCoursesbyuserId = async (req , res) => {
                 data : []
             }) 
         }
-        console.log(studentCourse , studentCourse?.courses);
+        
         
         const courses = await Course.find({ _id: {$in :studentCourse[0]?.courses}})
-        console.log(courses);
+      
         
         res.status(200).json({
             success : true , 

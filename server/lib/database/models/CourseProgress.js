@@ -30,3 +30,6 @@ const courseProgressSchema = new Schema({
 })
 
 const CourseProgress = mongoose.model('CourseProgress',courseProgressSchema)
+
+
+export default CourseProgress;

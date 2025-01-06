@@ -6,9 +6,9 @@ import { Button } from '../ui/button'
 import { Pause, Play, RotateCcw, RotateCw, Volume2, VolumeX } from 'lucide-react'
 
 const VideoPlayer = ({
-    width , height  , url , className
+    width , height  , url , className , setProgress ,progressPage
 }:{
-    width ?: string , height ?: string , url : string | undefined , className?: string
+    width ?: string , height ?: string , url : string | undefined , className?: string , setProgress?: (variable : boolean) => void , progressPage?: boolean
 }) => {
     const [playing, setPlaying ] = useState(false)
     const [volume , setVolume] = useState(0.5)
@@ -94,6 +94,13 @@ const VideoPlayer = ({
         },2000)
        }
     },[showControls])
+  useEffect(()=>{
+    if(played === 1 && progressPage){
+        setProgress(true)
+    }
+        
+  },[played])
+    
   return (
     <div onMouseEnter={()=>setShowControls(true)} onMouseLeave={()=>setShowControls(false)} className={twMerge('relative bg-gray-900  overflow-hidden shadow-2xl transition-all duration-300 ease-in-out', className , isFullScreen && 'h-screen w-screen')} 
     style={{
